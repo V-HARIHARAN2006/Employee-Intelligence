@@ -5,122 +5,168 @@ import plotly.express as px
 from pathlib import Path
 
 # ==========================================================
-# 1. PROJECT PATHS
+# 1. PAGE CONFIGURATION AND PROJECT PATHS
 # ==========================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 DATA_PATH = BASE_DIR / "dataset" / "employee_data.csv"
 
 # ==========================================================
-# 2. COLOR THEME
+# 2. COLOUR THEME
 # ==========================================================
 
 BG = "#EFFFF2"
 HEADER = "#91E3AF"
 CARD = "#D0F5DC"
-DARK = "#3D4841"
-GREEN = "#588563"
+DARK = "#123B2A"
+TEXT = "#234B38"
+GREEN = "#26734D"
 LIGHT_GREEN = "#91DDAF"
 GRID = "#D7E7DC"
+WHITE = "#F8FFF9"
 
 # ==========================================================
 # 3. CUSTOM CSS
 # ==========================================================
 
-st.markdown("""
-<style>
+st.markdown(
+    """
+    <style>
 
-.stApp {
-    background-color: #EFFFF2;
-    color: #3D4841;
-    font-family: Georgia, "Times New Roman", serif;
-}
+    .stApp {
+        background-color: #EFFFF2;
+        color: #173D2D;
+        font-family: Georgia, "Times New Roman", serif;
+    }
 
-.block-container {
-    padding-top: 0.4rem;
-    padding-bottom: 1rem;
-    max-width: 100%;
-}
+    .block-container {
+        padding-top: 0.7rem;
+        padding-bottom: 1.5rem;
+        max-width: 100%;
+    }
 
-.dashboard-header {
-    background-color: #91E3AF;
-    border-radius: 17px;
-    text-align: center;
-    padding: 10px 8px;
-    margin-bottom: 13px;
-    box-shadow: 0 3px 8px rgba(50,90,60,0.12);
-}
+    /* Main headings */
 
-.dashboard-header h1 {
-    color: #3D4841;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(23px, 3vw, 36px);
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin: 0;
-}
+    h1, h2, h3, h4, h5, h6 {
+        color: #103B29 !important;
+        font-family: Georgia, "Times New Roman", serif !important;
+        font-weight: bold !important;
+    }
 
-.kpi-card {
-    background-color: #D0F5DC;
-    border: 1.4px solid #668F75;
-    border-radius: 16px;
-    min-height: 100px;
-    padding: 10px 5px;
-    text-align: center;
-    box-shadow: 4px 6px 10px rgba(45,80,55,0.20);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+    p, label, li {
+        color: #234B38 !important;
+    }
 
-.kpi-value {
-    color: #3D4841;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(23px, 2.4vw, 37px);
-    font-weight: bold;
-    line-height: 1.2;
-}
+    /* Dashboard header */
 
-.kpi-label {
-    color: #40554A;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 5px;
-}
+    .dashboard-header {
+        background-color: #91E3AF;
+        border-radius: 17px;
+        text-align: center;
+        padding: 15px 8px;
+        margin-bottom: 15px;
+        box-shadow: 0 3px 8px rgba(50,90,60,0.12);
+    }
 
-.chart-title {
-    color: #3D4841;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 16px;
-    margin-bottom: 4px;
-}
+    .dashboard-header h1 {
+        color: #103B29 !important;
+        font-size: clamp(23px, 3vw, 36px);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin: 0;
+    }
 
-div[data-testid="stSelectbox"] {
-    background-color: #D0F5DC;
-    border: 1px solid #668F75;
-    border-radius: 12px;
-    padding: 5px 8px;
-    box-shadow: 3px 5px 8px rgba(45,80,55,0.12);
-}
+    /* KPI cards */
 
-div[data-testid="stSelectbox"] label {
-    color: #3D4841;
-    font-family: Georgia, "Times New Roman", serif;
-    font-weight: bold;
-}
+    .kpi-card {
+        background-color: #D0F5DC;
+        border: 1.5px solid #668F75;
+        border-radius: 16px;
+        min-height: 105px;
+        padding: 14px 6px;
+        text-align: center;
+        box-shadow: 4px 6px 10px rgba(45,80,55,0.15);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background-color: #F6FFF7;
-    border: 1px solid #A3BBA8;
-    border-radius: 9px;
-    box-shadow: 3px 5px 9px rgba(45,80,55,0.12);
-    padding: 4px;
-}
+    .kpi-value {
+        color: #075B3B !important;
+        font-size: clamp(23px, 2.4vw, 37px);
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: bold;
+        line-height: 1.2;
+    }
 
-</style>
-""", unsafe_allow_html=True)
+    .kpi-label {
+        color: #234B38 !important;
+        font-size: 13px;
+        font-family: Georgia, "Times New Roman", serif;
+        font-weight: bold;
+        margin-top: 7px;
+    }
+
+    /* Filters */
+
+    div[data-testid="stSelectbox"] {
+        background-color: #D0F5DC;
+        border: 1px solid #668F75;
+        border-radius: 12px;
+        padding: 5px 8px;
+        box-shadow: 3px 5px 8px rgba(45,80,55,0.12);
+    }
+
+    div[data-testid="stSelectbox"] label {
+        color: #173D2D !important;
+        font-weight: bold;
+    }
+
+    /* Chart containers */
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #F8FFF9;
+        border: 1px solid #A3BBA8;
+        border-radius: 10px;
+        box-shadow: 3px 5px 9px rgba(45,80,55,0.10);
+        padding: 5px;
+    }
+
+    /* Data tables */
+
+    [data-testid="stDataFrame"] {
+        border: 1px solid #A3BBA8;
+        border-radius: 8px;
+    }
+
+    /* Sidebar */
+
+    [data-testid="stSidebar"] {
+        background-color: #D9F0E3;
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #123B2A;
+    }
+
+    /* Download button */
+
+    .stDownloadButton button {
+        background-color: #26734D;
+        color: white !important;
+        border-radius: 8px;
+        border: none;
+    }
+
+    .stDownloadButton button p {
+        color: white !important;
+    }
+
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 # ==========================================================
 # 4. LOAD DATASET
@@ -152,23 +198,17 @@ def load_data(path):
 
 if not DATA_PATH.exists():
 
-    st.error("Employee dataset not found.")
-
-    st.code(str(DATA_PATH))
-
+    st.error("Employee dataset not found. Check dataset/employee_data.csv.")
     st.stop()
-
 
 try:
 
-    df = load_data(str(DATA_PATH))
+    df = load_data(DATA_PATH)
 
 except Exception as error:
 
     st.error(f"Dataset loading error: {error}")
-
     st.stop()
-
 
 # ==========================================================
 # 5. VALIDATE DATASET
@@ -190,29 +230,25 @@ missing_columns = [
 
 if missing_columns:
 
-    st.error(
-        f"Missing dataset columns: {missing_columns}"
-    )
-
+    st.error(f"Missing dataset columns: {missing_columns}")
     st.stop()
-
 
 # ==========================================================
 # 6. DASHBOARD HEADER
 # ==========================================================
 
-st.markdown("""
-<div class="dashboard-header">
-    <h1>HR ATTRITION DASHBOARD</h1>
-</div>
-""", unsafe_allow_html=True)
-
+st.markdown(
+    """
+    <div class="dashboard-header">
+        <h1>HR ATTRITION DASHBOARD</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # ==========================================================
-# 7. FILTERS
+# 7. FILTER OPTIONS
 # ==========================================================
-
-# Keep both filters in the same KPI row.
 
 gender_options = ["All"] + sorted(
     df["Gender"].dropna().unique().tolist()
@@ -226,19 +262,7 @@ department_options = ["All"] + sorted(
 # 8. FILTER INPUTS
 # ==========================================================
 
-# Temporary default values are replaced by actual
-# selections in the filter columns below.
-
-gender_filter = "All"
-department_filter = "All"
-
-# ==========================================================
-# 9. CALCULATE FILTERED DATA
-# ==========================================================
-
-# Use a compact filter row before KPI rendering.
-
-f1, f2 = st.columns([1, 1])
+f1, f2 = st.columns(2)
 
 with f1:
 
@@ -256,6 +280,9 @@ with f2:
         key="dashboard_department"
     )
 
+# ==========================================================
+# 9. FILTER DATA
+# ==========================================================
 
 filtered = df.copy()
 
@@ -271,16 +298,13 @@ if selected_department != "All":
         filtered["Department"] == selected_department
     ]
 
-
 if filtered.empty:
 
-    st.warning("No employees found for selected filters.")
-
+    st.warning("No employees found for the selected filters.")
     st.stop()
 
-
 # ==========================================================
-# 10. KPI VALUES
+# 10. KPI CALCULATIONS
 # ==========================================================
 
 total_employees = len(filtered)
@@ -301,7 +325,6 @@ average_salary = filtered["MonthlyIncome"].mean()
 
 department_count = filtered["Department"].nunique()
 
-
 # ==========================================================
 # 11. KPI CARD FUNCTION
 # ==========================================================
@@ -311,20 +334,12 @@ def kpi_card(value, label):
     st.markdown(
         f"""
         <div class="kpi-card">
-
-            <div class="kpi-value">
-                {value}
-            </div>
-
-            <div class="kpi-label">
-                {label}
-            </div>
-
+            <div class="kpi-value">{value}</div>
+            <div class="kpi-label">{label}</div>
         </div>
         """,
         unsafe_allow_html=True
     )
-
 
 # ==========================================================
 # 12. DISPLAY KPI CARDS
@@ -332,7 +347,7 @@ def kpi_card(value, label):
 
 st.write("")
 
-k1, k2, k3, k4, k5 = st.columns(5)
+k1, k2, k3, k4, k5 = st.columns(5, gap="small")
 
 with k1:
 
@@ -369,43 +384,41 @@ with k5:
         "Departments"
     )
 
-
 st.write("")
-
 
 # ==========================================================
 # 13. COMMON CHART STYLE
 # ==========================================================
 
-def chart_style(fig, height=245):
+def chart_style(fig, height=270):
 
     fig.update_layout(
 
         template="plotly_white",
 
-        paper_bgcolor="#F6FFF7",
+        paper_bgcolor=WHITE,
 
-        plot_bgcolor="#F6FFF7",
+        plot_bgcolor=WHITE,
 
         font=dict(
             family="Georgia, Times New Roman, serif",
-            size=11,
-            color="#3D4841"
+            size=12,
+            color=DARK
         ),
 
         title_font=dict(
             family="Georgia, Times New Roman, serif",
-            size=15,
-            color="#3D4841"
+            size=16,
+            color=DARK
         ),
 
         height=height,
 
         margin=dict(
-            l=8,
-            r=8,
-            t=40,
-            b=8
+            l=12,
+            r=18,
+            t=45,
+            b=15
         ),
 
         legend=dict(
@@ -413,7 +426,10 @@ def chart_style(fig, height=245):
             yanchor="bottom",
             y=1.0,
             x=0,
-            font=dict(size=10)
+            font=dict(
+                size=11,
+                color=DARK
+            )
         )
 
     )
@@ -421,17 +437,18 @@ def chart_style(fig, height=245):
     fig.update_xaxes(
         showgrid=False,
         zeroline=False,
-        linecolor="#B6C9BA"
+        linecolor="#A3BBA8",
+        tickfont=dict(color=DARK)
     )
 
     fig.update_yaxes(
-        gridcolor="#E0ECE2",
+        gridcolor=GRID,
         zeroline=False,
-        linecolor="#B6C9BA"
+        linecolor="#A3BBA8",
+        tickfont=dict(color=DARK)
     )
 
     return fig
-
 
 # ==========================================================
 # 14. DEPARTMENT AND GENDER CHART
@@ -463,10 +480,10 @@ fig1 = px.bar(
 
     color_discrete_map={
         "Female": "#4A514D",
-        "Male": "#588563"
+        "Male": "#26734D"
     },
 
-    title="Total employees by Department and Gender"
+    title="Total Employees by Department and Gender"
 
 )
 
@@ -478,12 +495,10 @@ fig1.update_traces(
 fig1.update_layout(
     xaxis_title="",
     yaxis_title="",
-    height=245,
     legend_title_text=""
 )
 
-fig1 = chart_style(fig1, 245)
-
+fig1 = chart_style(fig1, 270)
 
 # ==========================================================
 # 15. JOB ROLE CHART
@@ -513,9 +528,9 @@ fig2 = px.bar(
     color="Employees",
 
     color_continuous_scale=[
-        "#A7D9B3",
+        "#B5E5C2",
         "#588563",
-        "#3F694B"
+        "#245A3C"
     ],
 
     title="Total Employees by Job Role"
@@ -530,17 +545,15 @@ fig2.update_traces(
 fig2.update_layout(
     xaxis_title="",
     yaxis_title="",
-    coloraxis_showscale=False,
-    height=245
+    coloraxis_showscale=False
 )
 
 fig2.update_xaxes(
     tickangle=-30,
-    tickfont=dict(size=9)
+    tickfont=dict(size=9, color=DARK)
 )
 
-fig2 = chart_style(fig2, 245)
-
+fig2 = chart_style(fig2, 270)
 
 # ==========================================================
 # 16. AGE AND GENDER CHART
@@ -587,22 +600,20 @@ fig3 = px.bar(
 
     color_discrete_map={
         "Female": "#4A514D",
-        "Male": "#588563"
+        "Male": "#26734D"
     },
 
-    title="Total employees by Age and Gender"
+    title="Total Employees by Age and Gender"
 
 )
 
 fig3.update_layout(
     xaxis_title="",
     yaxis_title="",
-    height=245,
     legend_title_text=""
 )
 
-fig3 = chart_style(fig3, 245)
-
+fig3 = chart_style(fig3, 270)
 
 # ==========================================================
 # 17. ATTRITION DISTRIBUTION DONUT
@@ -644,16 +655,15 @@ fig4 = px.pie(
 
 fig4.update_traces(
     textposition="outside",
-    textinfo="value"
+    textinfo="value",
+    textfont=dict(color=DARK)
 )
 
 fig4.update_layout(
-    height=245,
     legend_title_text=""
 )
 
-fig4 = chart_style(fig4, 245)
-
+fig4 = chart_style(fig4, 270)
 
 # ==========================================================
 # 18. ATTRITION BY GENDER DONUT
@@ -693,16 +703,15 @@ fig5 = px.pie(
 
 fig5.update_traces(
     textposition="outside",
-    textinfo="value"
+    textinfo="value",
+    textfont=dict(color=DARK)
 )
 
 fig5.update_layout(
-    height=245,
     legend_title_text=""
 )
 
-fig5 = chart_style(fig5, 245)
-
+fig5 = chart_style(fig5, 270)
 
 # ==========================================================
 # 19. DISPLAY CHARTS
@@ -731,7 +740,6 @@ with right:
             use_container_width=True,
             config={"displayModeBar": False}
         )
-
 
 # Second row
 
@@ -770,7 +778,6 @@ with right:
                 use_container_width=True,
                 config={"displayModeBar": False}
             )
-
 
 # ==========================================================
 # 20. DETAILED WORKFORCE SUMMARY
@@ -816,27 +823,27 @@ with st.expander("View Detailed Workforce Summary"):
         mime="text/csv"
     )
 
-
 # ==========================================================
 # 21. FOOTER
 # ==========================================================
 
 st.divider()
 
-st.markdown("""
-<div style="
-    text-align:center;
-    color:#718477;
-    font-family:Georgia,serif;
-    font-size:12px;
-    padding:15px;
-">
-
-    HR ATTRITION DASHBOARD<br><br>
-
-    Employee Attrition Prediction and Workforce Analytics<br>
-
-    Data Science and Machine Learning Project
-
-</div>
-""", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="
+        text-align: center;
+        color: #315B45;
+        font-family: Georgia, serif;
+        font-size: 13px;
+        padding: 15px;
+    ">
+        <strong>HR ATTRITION DASHBOARD</strong>
+        <br><br>
+        Employee Attrition Prediction and Workforce Analytics
+        <br>
+        Data Science and Machine Learning Project
+    </div>
+    """,
+    unsafe_allow_html=True
+)
